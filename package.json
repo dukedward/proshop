@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "MERN ecommerce app",
     "main": "server.js",
+    "type": "module",
     "scripts": {
         "start": "node backend/server",
         "server": "nodemon backend/server",
@@ -13,8 +14,11 @@
     "author": "Edward Gregory",
     "license": "MIT",
     "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "colors": "^1.4.0",
         "dotenv": "^16.0.0",
-        "express": "^4.17.3"
+        "express": "^4.17.3",
+        "mongoose": "^6.3.0"
     },
     "devDependencies": {
         "concurrently": "^7.1.0",
