@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import bcrypt from 'bcryptjs'
 
 const userSchema = mongoose.Schema(
     {
@@ -25,6 +26,11 @@ const userSchema = mongoose.Schema(
         timestamps: true,
     }
 )
+
+// Verifies plaintext password against hashed password
+userSchema.methods.matchedPassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password)
+}
 
 const User = mongoose.model('User', userSchema)
 
