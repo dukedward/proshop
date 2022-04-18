@@ -98,14 +98,16 @@ const ProfileScreen = () => {
 
                     <Form.Group controlId='buttons'>
                         <Button
-                            className='my-3 btn-block'
+                            className='mt-3'
+                            style={{ width: '100%' }}
                             type='submit'
                             variant='primary'
                         >
                             Update
                         </Button>
                         <Button
-                            className='my-3 btn-block'
+                            className='mt-3'
+                            style={{ width: '100%' }}
                             onClick={() => {
                                 navigate(-1)
                             }}
