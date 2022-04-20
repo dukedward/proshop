@@ -10,10 +10,12 @@ import {
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
+    USER_DETAILS_RESET,
     USER_PROFILE_UPDATE_REQUEST,
     USER_PROFILE_UPDATE_SUCCESS,
     USER_PROFILE_UPDATE_FAIL,
 } from '../constants/userConstants'
+import { LIST_MY_ORDER_RESET } from '../constants/orderConstants'
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -55,6 +57,8 @@ export const logout = () => (dispatch) => {
     dispatch({
         type: USER_LOGOUT,
     })
+    dispatch({ type: USER_DETAILS_RESET })
+    dispatch({ type: LIST_MY_ORDER_RESET })
 }
 
 export const register = (name, email, password) => async (dispatch) => {
