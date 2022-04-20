@@ -9,7 +9,7 @@ import { getOrderDetails } from '../actions/orderActions'
 
 const OrderScreen = () => {
     const params = useParams()
-    const orderID = params.id
+    const orderId = params.id
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const orderDetails = useSelector((state) => state.orderDetails)
@@ -29,8 +29,10 @@ const OrderScreen = () => {
     }
 
     useEffect(() => {
-        dispatch(getOrderDetails(orderID))
-    }, [dispatch, orderID])
+        if (!order || order._id !== orderId) {
+            dispatch(getOrderDetails(orderId))
+        }
+    }, [dispatch, order, orderId])
 
     return loading ? (
         <Loader />
@@ -57,7 +59,7 @@ const OrderScreen = () => {
                             </p>
 
                             <p>
-                                <strong>Address:</strong>
+                                <strong>Address: </strong>
                                 {order.shippingAddress.address},{' '}
                                 {order.shippingAddress.city},{' '}
                                 {order.shippingAddress.usState}{' '}
