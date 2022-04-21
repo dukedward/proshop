@@ -13,6 +13,7 @@ import {
     userLoginReducer,
     userRegisterReducer,
     userUpdateProfileReducer,
+    userUpdateReducer,
 } from './reducers/userReducers'
 import {
     orderCreateReducer,
@@ -22,19 +23,20 @@ import {
 } from './reducers/orderReducers'
 
 const reducer = combineReducers({
-    productList: productListReducer,
-    productDetails: productDetailsReducer,
     cart: cartReducer,
-    userDelete: userDeleteReducer,
-    userList: userListReducer,
-    userLogin: userLoginReducer,
-    userRegister: userRegisterReducer,
-    userDetails: userDetailsReducer,
-    userUpdateProfile: userUpdateProfileReducer,
+    myOrderList: myOrdersListReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
-    myOrderList: myOrdersListReducer,
+    productDetails: productDetailsReducer,
+    productList: productListReducer,
+    userDelete: userDeleteReducer,
+    userDetails: userDetailsReducer,
+    userList: userListReducer,
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
+    userUpdate: userUpdateReducer,
+    userUpdateProfile: userUpdateProfileReducer,
 })
 const userInfoFromStorage = localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
