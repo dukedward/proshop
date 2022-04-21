@@ -4,7 +4,7 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listProducts } from '../actions/productActions'
+import { listProducts, deleteProduct } from '../actions/productActions'
 import { useNavigate } from 'react-router-dom'
 
 const ProductListScreen = () => {
@@ -13,9 +13,13 @@ const ProductListScreen = () => {
     const { userInfo } = userLogin
     const productList = useSelector((state) => state.productList)
     const { loading, error, products } = productList
-    /* const productDelete = useSelector((state) => state.productDelete)
-    const { success: successDelete } = productDelete
-    const productCreate = useSelector((state) => state.productCreate)
+    const productDelete = useSelector((state) => state.productDelete)
+    const {
+        loading: loadingDelete,
+        error: errorDelete,
+        success: successDelete,
+    } = productDelete
+    /* const productCreate = useSelector((state) => state.productCreate)
     const { success: successCreate } = productCreate */
     const navigate = useNavigate()
 
@@ -25,8 +29,7 @@ const ProductListScreen = () => {
         } else {
             navigate('/login')
         }
-        //, successDelete
-    }, [dispatch, navigate, userInfo])
+    }, [dispatch, navigate, userInfo, successDelete])
 
     const createProductHandler = (product) => {
         console.log('created')
@@ -34,8 +37,7 @@ const ProductListScreen = () => {
 
     const deleteProductHandler = (id) => {
         if (window.confirm('Are you sure')) {
-            //dispatch(deleteProducts(id))
-            console.log('deleted')
+            dispatch(deleteProduct(id))
         }
     }
 
@@ -51,6 +53,8 @@ const ProductListScreen = () => {
                     </Button>
                 </Col>
             </Row>
+            {loadingDelete && <Loader />}
+            {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
             {loading ? (
                 <Loader />
             ) : error ? (
