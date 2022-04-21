@@ -2,7 +2,7 @@ import express from 'express'
 import {
     authUser,
     deleteUser,
-    getUser,
+    getUserById,
     getUserProfile,
     getUsers,
     registerUser,
@@ -22,7 +22,7 @@ router
 router
     .route('/:id')
     .delete(protect, admin, deleteUser)
-    .get(protect, admin, getUser)
+    .get(protect, admin, getUserById)
     .put(protect, admin, updateUser)
 
 export default router
