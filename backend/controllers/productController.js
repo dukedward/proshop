@@ -39,58 +39,44 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
 // @desc Create new product
 // @route POST /api/products
-// @access Public
+// @access Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
-    const { name, price, category, brand } = req.body
-    const productExists = await Product.findOne({ name })
-
-    if (productExists) {
-        res.status(400)
-        throw new Error('Product exists already')
-    }
-
-    const product = await Product.create({
-        name,
-        price,
-        category,
-        brand,
+    const product = new Product({
+        name: 'Sample Product',
+        price: 0,
+        user: req.user._id,
+        image: '/images/sample.jpg',
+        brand: 'Brand Name',
+        category: 'Category Name',
+        countInStock: 0,
+        numReviews: 0,
+        description: 'This is a sample product',
     })
 
-    if (product) {
-        res.status(201).json({
-            _id: product._id,
-            name: product.name,
-            price: product.price,
-            category: product.category,
-            brand: product.brand,
-        })
-    } else {
-        res.status(400)
-        throw new Error('Invalid product data')
-    }
+    const createProduct = await product.save()
+    res.status(201).json(createProduct)
 })
 
 // @desc    Update product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
+    const { name, price, description, image, brand, category, countInStock } =
+        req.body
     const product = await Product.findById(req.params.id)
 
     if (product) {
         product.name = req.body.name || product.name
         product.price = req.body.price || product.price
-        product.category = req.body.category || product.category
+        product.description = req.body.description || product.description
+        product.image = req.body.image || product.image
         product.brand = req.body.brand || product.brand
+        product.category = req.body.category || product.category
+        product.countInStock = req.body.countInStock || product.countInStock
 
         const updatedProduct = await product.save()
 
-        res.json({
-            _id: updatedProduct._id,
-            name: updatedProduct.name,
-            price: updatedProduct.price,
-            category: updatedProduct.category,
-            brand: updateProduct.brand,
-        })
+        res.json(updatedProduct)
     } else {
         res.status(404)
         throw new Error('Product not found')
