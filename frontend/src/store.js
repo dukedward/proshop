@@ -23,13 +23,17 @@ import {
     orderDetailsReducer,
     myOrdersListReducer,
     orderPayReducer,
+    orderListReducer,
+    orderDeleteReducer,
 } from './reducers/orderReducers'
 
 const reducer = combineReducers({
     cart: cartReducer,
     myOrderList: myOrdersListReducer,
     orderCreate: orderCreateReducer,
+    orderDelete: orderDeleteReducer,
     orderDetails: orderDetailsReducer,
+    orderList: orderListReducer,
     orderPay: orderPayReducer,
     productCreate: productCreateReducer,
     productDelete: productDeleteReducer,

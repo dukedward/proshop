@@ -1,6 +1,8 @@
 import express from 'express'
 import {
     addOrderItems,
+    deleteOrder,
+    getOrders,
     getMyOrders,
     getOrderById,
     updateOrderPaid,
@@ -9,9 +11,12 @@ import { admin, protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.route('/').post(protect, addOrderItems)
+router.route('/').post(protect, addOrderItems).get(protect, admin, getOrders)
 router.route('/myorders').get(protect, getMyOrders)
-router.route('/:id').get(protect, getOrderById)
+router
+    .route('/:id')
+    .get(protect, getOrderById)
+    .delete(protect, admin, deleteOrder)
 router.route('/:id/pay').put(protect, updateOrderPaid)
 
 export default router

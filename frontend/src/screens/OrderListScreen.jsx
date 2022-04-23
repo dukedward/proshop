@@ -4,22 +4,22 @@ import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listUsers, deleteUser } from '../actions/userActions'
+import { listOrders, deleteOrder } from '../actions/orderActions'
 import { useNavigate } from 'react-router-dom'
 
 const OrderListScreen = () => {
     const dispatch = useDispatch()
-    const userList = useSelector((state) => state.userList)
-    const { loading, error, users } = userList
+    const orderList = useSelector((state) => state.orderList)
+    const { loading, error, orders } = orderList
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
-    const userDelete = useSelector((state) => state.userDelete)
-    const { success: successDelete } = userDelete
+    const orderDelete = useSelector((state) => state.orderDelete)
+    const { success: successDelete } = orderDelete
     const navigate = useNavigate()
 
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
-            dispatch(listUsers())
+            dispatch(listOrders())
         } else {
             navigate('/login')
         }
@@ -27,13 +27,13 @@ const OrderListScreen = () => {
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure')) {
-            dispatch(deleteUser(id))
+            dispatch(deleteOrder(id))
         }
     }
 
     return (
         <>
-            <h1>Users: </h1>
+            <h1>Orders: </h1>
             {loading ? (
                 <Loader />
             ) : error ? (
@@ -50,29 +50,36 @@ const OrderListScreen = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>NAME</th>
-                            <th>EMAIL</th>
-                            <th>ADMIN</th>
+                            <th>USER</th>
+                            <th>DATE</th>
+                            <th>TOTAL</th>
+                            <th>PAID</th>
+                            <th>DELIVERED</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users &&
-                            users.map((user) => (
-                                <tr key={user._id}>
-                                    <td>{user._id}</td>
-                                    <td>{user.name}</td>
+                        {orders &&
+                            orders.map((order) => (
+                                <tr key={order._id}>
+                                    <td>{order._id}</td>
+                                    <td>{order.user && order.user.name}</td>
+                                    <td>{order.createdAt.substring(0, 10)}</td>
+                                    <td>${order.totalPrice}</td>
                                     <td>
-                                        <a href={`mailto: ${user.email}`}>
-                                            {user.email}
-                                        </a>
+                                        {order.isPaid ? (
+                                            order.paidAt.substring(0, 10)
+                                        ) : (
+                                            <i
+                                                className='fas fa-times'
+                                                style={{ color: 'red' }}
+                                            />
+                                        )}
                                     </td>
                                     <td>
-                                        {user.isAdmin ? (
-                                            <i
-                                                className='fas fa-check'
-                                                style={{ color: 'green' }}
-                                            />
+                                        {order.isDelivered ? (
+                                            order.deliveredAt.substring(0, 10)
                                         ) : (
                                             <i
                                                 className='fas fa-times'
@@ -82,7 +89,19 @@ const OrderListScreen = () => {
                                     </td>
                                     <td>
                                         <LinkContainer
-                                            to={`/admin/user/${user._id}/edit`}
+                                            to={`/order/${order._id}`}
+                                        >
+                                            <Button
+                                                variant='light'
+                                                className='btn-sm'
+                                            >
+                                                Details
+                                            </Button>
+                                        </LinkContainer>
+                                    </td>
+                                    <td>
+                                        <LinkContainer
+                                            to={`/admin/order/${order._id}/edit`}
                                         >
                                             <Button
                                                 variant='light'
@@ -95,7 +114,7 @@ const OrderListScreen = () => {
                                             variant='danger'
                                             className='btn-sm'
                                             onClick={() =>
-                                                deleteHandler(user._id)
+                                                deleteHandler(order._id)
                                             }
                                         >
                                             <i className='fas fa-trash' />
