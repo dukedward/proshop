@@ -231,7 +231,7 @@ const OrderScreen = () => {
                                             className='btn'
                                             onClick={shippingHandler}
                                         >
-                                            Shipped Out
+                                            Mark Order Shipped
                                         </Button>
                                     </ListGroup.Item>
                                 )}
