@@ -17,6 +17,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import OrderEditScreen from './screens/OrderEditScreen'
 
 const App = () => {
     return (
@@ -61,6 +62,10 @@ const App = () => {
                         <Route
                             path='/admin/orderlist'
                             element={<OrderListScreen />}
+                        />
+                        <Route
+                            path='/admin/order/:id/edit'
+                            element={<OrderEditScreen />}
                         />
                     </Routes>
                 </Container>
