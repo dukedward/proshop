@@ -6,6 +6,7 @@ import { listProducts } from '../actions/productActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
+import ProductCarousel from '../components/ProductCarousel'
 import { useParams } from 'react-router-dom'
 
 const HomeScreen = () => {
@@ -22,6 +23,7 @@ const HomeScreen = () => {
 
     return (
         <>
+            {!keyword && <ProductCarousel />}
             <h1>Latest Products</h1>
             {loading ? (
                 <Loader />
@@ -29,6 +31,11 @@ const HomeScreen = () => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <>
+                    <Paginate
+                        pages={pages}
+                        page={page}
+                        keyword={keyword ? keyword : ''}
+                    />
                     <Row>
                         {products.map((product) => (
                             <Col key={product._id} sm={12} md={6} lg={4}>
@@ -36,11 +43,6 @@ const HomeScreen = () => {
                             </Col>
                         ))}
                     </Row>
-                    <Paginate
-                        pages={pages}
-                        page={page}
-                        keyword={keyword ? keyword : ''}
-                    />
                 </>
             )}
         </>
