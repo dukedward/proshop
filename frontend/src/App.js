@@ -27,6 +27,10 @@ const App = () => {
                     <Routes>
                         <Route path='/' element={<HomeScreen />} />
                         <Route
+                            path='/search/:keyword'
+                            element={<HomeScreen />}
+                        />
+                        <Route
                             path='/product/:id'
                             element={<ProductScreen />}
                         />

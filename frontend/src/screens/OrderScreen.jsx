@@ -53,7 +53,6 @@ const OrderScreen = () => {
                 setSdkReady(true)
             }
             document.body.appendChild(script)
-            console.log(script)
         }
 
         if (!order || order._id !== orderId || successPay || successShip) {
