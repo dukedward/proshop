@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Form, Button, Row, Col, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -8,10 +8,14 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
 import { USER_PROFILE_UPDATE_RESET } from '../constants/userConstants'
 import { LinkContainer } from 'react-router-bootstrap'
+import Paginate from '../components/Paginate'
 
 const ProfileScreen = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const params = useParams()
+    const keyword = params.keyword
+    const pageNumber = params.pageNumber || 1
     const userDetails = useSelector((state) => state.userDetails)
     const { loading, error, user } = userDetails
     const userLogin = useSelector((state) => state.userLogin)
@@ -19,7 +23,13 @@ const ProfileScreen = () => {
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
     const { success } = userUpdateProfile
     const myOrderList = useSelector((state) => state.myOrderList)
-    const { loading: loadingOrders, error: errorOrders, orders } = myOrderList
+    const {
+        loading: loadingOrders,
+        error: errorOrders,
+        orders,
+        pages,
+        page,
+    } = myOrderList
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -33,13 +43,13 @@ const ProfileScreen = () => {
             if (!user.name || success) {
                 dispatch({ type: USER_PROFILE_UPDATE_RESET })
                 dispatch(getUserDetails('profile'))
-                dispatch(listMyOrders())
+                dispatch(listMyOrders(keyword, pageNumber))
             } else {
                 setName(user.name)
                 setEmail(user.email)
             }
         }
-    }, [user, userInfo, success, navigate, dispatch])
+    }, [user, userInfo, success, keyword, pageNumber, navigate, dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -129,70 +139,82 @@ const ProfileScreen = () => {
                 ) : errorOrders ? (
                     <Message variant='danger'>{errorOrders}</Message>
                 ) : (
-                    <Table
-                        striped
-                        bordered
-                        hover
-                        responsive
-                        variant='dark'
-                        className='table-sm'
-                    >
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>DATE</th>
-                                <th>TOTAL</th>
-                                <th>PAID</th>
-                                <th>SHIPPED</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders.map((order) => {
-                                return (
-                                    <tr key={order._id}>
-                                        <td>{order._id}</td>
-                                        <td>
-                                            {order.createdAt.substring(0, 10)}
-                                        </td>
-                                        <td>{order.totalPrice}</td>
-                                        <td>
-                                            {order.isPaid ? (
-                                                order.paidAt.substring(0, 10)
-                                            ) : (
-                                                <i
-                                                    className='fas fa-times'
-                                                    style={{ color: 'red' }}
-                                                />
-                                            )}
-                                        </td>
-                                        <td>
-                                            {order.isShipped ? (
-                                                order.shippedAt.substring(0, 10)
-                                            ) : (
-                                                <i
-                                                    className='fas fa-times'
-                                                    style={{ color: 'red' }}
-                                                />
-                                            )}
-                                        </td>
-                                        <td>
-                                            <LinkContainer
-                                                to={`/order/${order._id}`}
-                                            >
-                                                <Button
-                                                    className='btn-sm'
-                                                    variant='light'
+                    <>
+                        <Paginate page={page} pages={pages} isProfile />
+                        <Table
+                            striped
+                            bordered
+                            hover
+                            responsive
+                            variant='dark'
+                            className='table-sm'
+                        >
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATE</th>
+                                    <th>TOTAL</th>
+                                    <th>PAID</th>
+                                    <th>SHIPPED</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orders.map((order) => {
+                                    return (
+                                        <tr key={order._id}>
+                                            <td>{order._id}</td>
+                                            <td>
+                                                {order.createdAt.substring(
+                                                    0,
+                                                    10
+                                                )}
+                                            </td>
+                                            <td>{order.totalPrice}</td>
+                                            <td>
+                                                {order.isPaid ? (
+                                                    order.paidAt.substring(
+                                                        0,
+                                                        10
+                                                    )
+                                                ) : (
+                                                    <i
+                                                        className='fas fa-times'
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                )}
+                                            </td>
+                                            <td>
+                                                {order.isShipped ? (
+                                                    order.shippedAt.substring(
+                                                        0,
+                                                        10
+                                                    )
+                                                ) : (
+                                                    <i
+                                                        className='fas fa-times'
+                                                        style={{ color: 'red' }}
+                                                    />
+                                                )}
+                                            </td>
+                                            <td>
+                                                <LinkContainer
+                                                    to={`/order/${order._id}`}
                                                 >
-                                                    Details
-                                                </Button>
-                                            </LinkContainer>
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
+                                                    <Button
+                                                        className='btn-sm'
+                                                        variant='light'
+                                                    >
+                                                        Details
+                                                    </Button>
+                                                </LinkContainer>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </Table>
+                    </>
                 )}
             </Col>
         </Row>

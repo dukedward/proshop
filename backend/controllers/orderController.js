@@ -102,18 +102,52 @@ const updateOrderShipped = asyncHandler(async (req, res) => {
 // @route GET /api/orders/myorders
 // @access Private
 const getMyOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id })
+    // Paginate Functionality
+    const pageSize = 5
+    const page = Number(req.query.pageNumber) || 1
 
-    res.json(orders)
+    // Keyword search functionality
+    const keyword = req.query.keyword
+        ? {
+              name: {
+                  $regex: req.query.keyword,
+                  $options: 'i',
+              },
+          }
+        : {}
+
+    const count = await Order.countDocuments({ ...keyword })
+    const orders = await Order.find({ ...keyword, user: req.user._id })
+        .limit(pageSize)
+        .skip(pageSize * (page - 1))
+
+    res.json({ orders, page, pages: Math.ceil(count / pageSize) })
 })
 
 // @desc Get all orders
 // @route GET /api/orders
 // @access Private/ Admin
 const getOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find({}).populate('user', 'id name')
+    // Paginate Functionality
+    const pageSize = 5
+    const page = Number(req.query.pageNumber) || 1
 
-    res.json(orders)
+    // Keyword search functionality
+    const keyword = req.query.keyword
+        ? {
+              name: {
+                  $regex: req.query.keyword,
+                  $options: 'i',
+              },
+          }
+        : {}
+
+    const count = await Order.countDocuments({ ...keyword })
+    const orders = await Order.find({ ...keyword })
+        .populate('user', 'id name')
+        .limit(pageSize)
+        .skip(pageSize * (page - 1))
+    res.json({ orders, page, pages: Math.ceil(count / pageSize) })
 })
 
 // @desc Delete order by ID

@@ -17,6 +17,7 @@ const ProductListScreen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams()
+    const keyword = params.keyword
     const pageNumber = params.pageNumber || 1
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
@@ -44,11 +45,12 @@ const ProductListScreen = () => {
         if (successCreate) {
             navigate(`/admin/product/${createdProduct._id}/edit`)
         } else {
-            dispatch(listProducts('', pageNumber))
+            dispatch(listProducts(keyword, pageNumber))
         }
     }, [
         dispatch,
         navigate,
+        keyword,
         pageNumber,
         userInfo,
         successDelete,
@@ -88,7 +90,12 @@ const ProductListScreen = () => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <>
-                    <Paginate pages={pages} page={page} isAdmin={true} />
+                    <Paginate
+                        pages={pages}
+                        page={page}
+                        isAdminProduct
+                        keyword={keyword ? keyword : ''}
+                    />
                     <Table
                         striped
                         bordered

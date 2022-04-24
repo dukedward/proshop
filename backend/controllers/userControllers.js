@@ -105,8 +105,25 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-    const users = await User.find({})
-    res.json(users)
+    // Paginate Functionality
+    const pageSize = 5
+    const page = Number(req.query.pageNumber) || 1
+
+    // Keyword search functionality
+    const keyword = req.query.keyword
+        ? {
+              name: {
+                  $regex: req.query.keyword,
+                  $options: 'i',
+              },
+          }
+        : {}
+
+    const count = await User.countDocuments({ ...keyword })
+    const users = await User.find({ ...keyword })
+        .limit(pageSize)
+        .skip(pageSize * (page - 1))
+    res.json({ users, page, pages: Math.ceil(count / pageSize) })
 })
 
 // @desc Delete user by ID
