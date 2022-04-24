@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import { listUsers, deleteUser } from '../actions/userActions'
 import { useNavigate, useParams } from 'react-router-dom'
 import Paginate from '../components/Paginate'
+import Meta from '../components/Meta'
 
 const UserListScreen = () => {
     const dispatch = useDispatch()
@@ -44,6 +45,7 @@ const UserListScreen = () => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <>
+                    <Meta title='Admin | Users' />
                     <Paginate
                         pages={pages}
                         page={page}

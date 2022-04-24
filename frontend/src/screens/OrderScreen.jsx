@@ -9,6 +9,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, shipOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET, ORDER_SHIP_RESET } from '../constants/orderConstants'
+import Meta from '../components/Meta'
 
 const OrderScreen = () => {
     const navigate = useNavigate()
@@ -82,6 +83,7 @@ const OrderScreen = () => {
         <Message variant='danger'>{error}</Message>
     ) : (
         <>
+            <Meta title='Proshop Checkout | Order Summary' />
             <h1>Order: {order._id}</h1>
 
             <Row>

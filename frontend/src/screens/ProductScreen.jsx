@@ -10,6 +10,7 @@ import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import Meta from '../components/Meta'
 
 const ProductScreen = () => {
     const params = useParams()
@@ -56,6 +57,7 @@ const ProductScreen = () => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <>
+                    <Meta title={`Welcome to Proshop | ${product.name}`} />
                     <Link className='btn btn-light  my-3' to='/'>
                         Go Back
                     </Link>

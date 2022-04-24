@@ -12,6 +12,7 @@ import {
 } from '../actions/productActions'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import Meta from '../components/Meta'
 
 const ProductListScreen = () => {
     const dispatch = useDispatch()
@@ -90,6 +91,7 @@ const ProductListScreen = () => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <>
+                    <Meta title='Admin | Products' />
                     <Paginate
                         pages={pages}
                         page={page}

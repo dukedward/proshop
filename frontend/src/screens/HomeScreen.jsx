@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Product from '../components/Product'
 import { Col, Row } from 'react-bootstrap'
@@ -8,6 +9,7 @@ import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
 import { useParams } from 'react-router-dom'
+import Meta from '../components/Meta'
 
 const HomeScreen = () => {
     const params = useParams()
@@ -23,7 +25,13 @@ const HomeScreen = () => {
 
     return (
         <>
-            {!keyword && <ProductCarousel />}
+            {!keyword ? (
+                <ProductCarousel />
+            ) : (
+                <Link to='/' className='btn btn-light'>
+                    Go Back
+                </Link>
+            )}
             <h1>Latest Products</h1>
             {loading ? (
                 <Loader />
@@ -31,6 +39,7 @@ const HomeScreen = () => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <>
+                    <Meta title='Welcome to Proshop | Home' />
                     <Paginate
                         pages={pages}
                         page={page}

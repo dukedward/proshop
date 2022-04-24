@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import { listOrders, deleteOrder } from '../actions/orderActions'
 import { useNavigate, useParams } from 'react-router-dom'
 import Paginate from '../components/Paginate'
+import Meta from '../components/Meta'
 
 const OrderListScreen = () => {
     const dispatch = useDispatch()
@@ -44,6 +45,7 @@ const OrderListScreen = () => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <>
+                    <Meta title='Admin | Orders' />
                     <Paginate
                         pages={pages}
                         page={page}
