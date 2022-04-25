@@ -8,9 +8,15 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/')
     },
     filename(req, file, cb) {
+        const fileName = file.originalname.replace(
+            path.extname(file.originalname),
+            ''
+        )
         cb(
             null,
-            `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+            `${file.fieldname}-${fileName}-${Date.now()}${path.extname(
+                file.originalname
+            )}`
         )
     },
 })
