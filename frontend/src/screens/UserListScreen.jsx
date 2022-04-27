@@ -118,6 +118,12 @@ const UserListScreen = () => {
                                 ))}
                         </tbody>
                     </Table>
+                    <Paginate
+                        pages={pages}
+                        page={page}
+                        isAdminUsers
+                        keyword={keyword ? keyword : ''}
+                    />
                 </>
             )}
         </>

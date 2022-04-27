@@ -139,6 +139,12 @@ const OrderListScreen = () => {
                                 ))}
                         </tbody>
                     </Table>
+                    <Paginate
+                        pages={pages}
+                        page={page}
+                        isAdminOrders
+                        keyword={keyword ? keyword : ''}
+                    />
                 </>
             )}
         </>
